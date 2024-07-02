@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 
 export default function CoordinatesPage() {
   const [coordinates, setCoordinates] = useState({ latitude: 0, longitude: 0 });
-  const [isTracking, setIsTracking] = useState(false); // Track if location is being watched
+  const [isTracking, setIsTracking] = useState(false);
 
   useEffect(() => {
     let watchId; // Store the watch ID
@@ -15,10 +15,15 @@ export default function CoordinatesPage() {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
           });
+          console.log('Updated coordinates from watchPosition:', {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          });
         },
         (error) => {
           console.error('Error getting geolocation:', error);
-        }
+        },
+        { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
       );
     }
 
@@ -39,13 +44,15 @@ export default function CoordinatesPage() {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
           });
-          console.log(
-            `Latitude: ${position.coords.latitude}, Longitude: ${position.coords.longitude}`
-          );
+          console.log('Coordinates from getCurrentPosition:', {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          });
         },
         (error) => {
           console.error('Error getting geolocation:', error);
-        }
+        },
+        { enableHighAccuracy: true, maximumAge: 0, timeout: 50000 }
       );
     } else {
       console.error('Geolocation is not supported by this browser.');
